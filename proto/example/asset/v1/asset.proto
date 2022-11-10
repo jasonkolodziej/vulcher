@@ -1,0 +1,68 @@
+syntax = "proto3";
+package example.asset.v1;
+import "example/opt/v1/opt.proto";
+import "example/semver/v1/semver.proto";
+import "google/protobuf/timestamp.proto";
+
+// These annotations are used when generating the OpenAPI file.
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    version: "1.0";
+  };
+  external_docs: {
+    url: "https://github.com/jasonkolodziej/octo-broccoli";
+    description: "gRPC-gateway boilerplate repository";
+  }
+  schemes: HTTPS;
+};
+
+message Asset {
+  string id = 1 [(example.opt.v1.id) = true];
+  string name = 2;
+  example.semver.v1.Version version = 3;
+  bytes data = 4;
+  google.protobuf.Timestamp create_time = 5;
+}
+
+message CreateAssetRequest {
+  Asset asset = 1;
+}
+
+message CreateAssetResponse {
+  string id = 1;
+}
+
+message GetAssetByIDRequest {
+  string id = 1;
+}
+
+message GetAssetByIDResponse {
+  Asset asset = 1;
+}
+
+
+service AssetService {
+  rpc CreateAsset(CreateAssetRequest) returns (CreateAssetResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/CreateAsset"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Create an Asset"
+      description: "Creates an asset with the following request"
+      tags: "asset"
+    };
+  }
+  rpc GetAssetByID(GetAssetByIDRequest) returns (GetAssetByIDResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/GetAssetByID/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get asset"
+      description: "Get an asset by its ID."
+      tags: "asset"
+    };
+  }
+}

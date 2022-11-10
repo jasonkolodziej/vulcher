@@ -1,0 +1,4 @@
+# For help see: https://docs.buf.build/tour/use-a-workspace#define-a-workspace
+version: v1
+directories:
+  - proto

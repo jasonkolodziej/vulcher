@@ -1,0 +1,12 @@
+# For help see: https://docs.buf.build/tour/configure-and-build#configure-buf
+version: v1
+#name: buf.build/acme/paymentapis
+deps:
+  - buf.build/googleapis/googleapis
+  - buf.build/grpc-ecosystem/grpc-gateway
+lint:
+  use:
+    - DEFAULT
+breaking:
+  use:
+    - FILE
